@@ -1,0 +1,202 @@
+#!/usr/bin/python3
+
+import argparse 
+import contextlib
+from posixpath import basename
+from time import sleep 
+import dotenv
+import json
+import os
+import subprocess
+import sys
+import ruamel.yaml
+
+dotenv.load_dotenv()
+DEV_DIR = os.getenv("DEV_DIR")
+SCRATCH_DIR = os.getenv("SCRATCH_DIR")
+OVERLAY_DIR = os.getenv("OVERLAY_DIR")
+RUN_DIR = os.path.join(os.getenv("XDG_RUNTIME_DIR"), "osbuild-vm")
+
+PORTS = {
+  22: 2222,
+  443: 10443,
+  9090: 9091,
+  8080: 8080,
+}
+
+yaml = ruamel.yaml.YAML()
+yaml.explicit_start = True
+
+def echo(message, level = "INFO"):
+  BOLD = '\033[1m'
+  RESET = '\033[0m'
+  LEVELS = {
+    "OK": { "color": '\033[32m', "level": "Ok" },
+    "INFO": { "color": '\033[33m', "level": "Info" },
+    "ERROR": { "color": '\033[31m', "level": "Error" },
+  }
+
+  def __color(level):
+    return LEVELS[level]['color']
+
+  def __level(level):
+    return LEVELS[level]['level']
+
+  subprocess.run(["echo", f"{__color(level)}{BOLD}{__level(level)}:{RESET} {message}"])
+
+def load_json(path):
+  with contextlib.suppress(FileNotFoundError, ImportError):
+    with open(path, "r") as f:
+      return json.loads(f.read())
+
+def get_image_location(arch, distro) -> str:
+  images = load_json(os.path.join("config", "guest-images.json"))
+  try:
+    return os.path.join(SCRATCH_DIR, images[arch][distro])
+  except Exception:
+    echo(f"{distro} not available for {arch} arch", "ERROR")
+    sys.exit(1)
+
+def run_command(cmd, step, **args) -> None:
+  try:
+    subprocess.run(cmd, check=True, **args)
+  except KeyboardInterrupt:
+    echo("Keyboard interrupt, aborting", "OK")
+    sys.exit(0)
+  except Exception:
+    echo(f"Error carrying out {step} step", "ERROR")
+    sys.exit(1)
+
+def mk_overlay(base_image_path, image_name):
+  print("Making overlay")
+  run_command(["qemu-img", "create", "-o", f"backing_file={base_image_path},backing_fmt=qcow2", "-f", "qcow2", image_name], "make_overlay")
+  run_command(["qemu-img", "resize", image_name, "100G"], "make_overlay")
+
+def get_user():
+  return subprocess.check_output(["whoami"], encoding='utf-8').strip()
+
+def get_pubkey():
+  host = subprocess.check_output("hostname | tr \"[:upper:]\" \"[:lower:]\"", shell=True, encoding='utf-8').strip()
+  pubkey_file = os.path.expanduser(f"~/.ssh/{host}.pub")
+  key = subprocess.check_output(["cat", pubkey_file], encoding='utf-8').strip()
+  return key
+
+def get_repos(arch, distro):
+  if not distro.startswith("rhel"):
+    return {}
+
+  if distro.startswith("rhel8"):
+    repos = load_json(os.path.join("config", "rhel8-repos.json"))
+    if not arch == "x86_64":
+      del repos["rt"]
+
+  if distro.startswith("rhel9"):
+    repos = load_json(os.path.join("config", "rhel9-repos.json"))
+
+  for r in repos["yum_repos"]:
+    repos["yum_repos"][r]["baseurl"] = repos["yum_repos"][r]["baseurl"].replace("${arch}", arch)
+  
+  return repos
+
+def mk_user_data(user, pubkey, repos):
+  data_dir = os.path.join(RUN_DIR, "data")
+  run_command(["sudo", "mkdir", "-p", data_dir], "make_user_data")
+  user_data = load_json(os.path.join("config", "user-data.json"))
+
+  for u in user_data["users"]:
+    if u == "default":
+      continue
+    # if u["name"] == "${user}":
+    #   u["name"] = u["name"].replace("${user}", user)
+    #   u["sudo"] = "ALL=(ALL) NOPASSWD:ALL"
+    u["ssh_authorized_keys"] = [pubkey]
+
+  user_data["chpasswd"]["list"] = user_data["chpasswd"]["list"].replace("${user}", user)
+  
+  # home = "/home/kingsley"
+  # user_data["runcmd"] = []
+
+  with open(os.path.join(data_dir, "user-data"), "w") as f:
+    data = json.dumps({**user_data, **repos})
+    data = json.loads(data, object_pairs_hook=ruamel.yaml.comments.CommentedMap)
+    ruamel.yaml.scalarstring.walk_tree(data)
+    f.write("#cloud-config\n")
+    yaml.dump(data, f)
+
+def mk_metadata(image_name):
+  data_dir = os.path.join(RUN_DIR, "data")
+  run_command(["sudo", "mkdir", "-p", data_dir], "make_metadata")
+  meta_data = load_json(os.path.join("config", "meta-data.json"))
+  meta_data["local-hostname"] = meta_data["local-hostname"].replace("${image_name}", image_name)
+
+  with open(os.path.join(data_dir, "meta-data"), "w") as f:
+    data = json.dumps({**meta_data})
+    data = json.loads(data, object_pairs_hook=ruamel.yaml.comments.CommentedMap)
+    ruamel.yaml.scalarstring.walk_tree(data)
+    yaml.dump(data, f)
+
+def mk_cloud_init(iso):
+  run_command(["genisoimage", "-input-charset", "utf-8", "-output", 
+    f"{RUN_DIR}/data/{iso}", "-volid", "cidata", "-joliet", "-rock",
+    "-quiet", f"{RUN_DIR}/data/user-data", f"{RUN_DIR}/data/meta-data"], "make_cloud_init")
+
+def start(image, arch, iso):
+  mac = "FE:0B:6E:22:3D:00"
+
+  for l, r in PORTS.items():
+    echo(f"Forwarding port {r} → {l}")
+
+  fwds = ",".join([f"hostfwd=tcp::{r}-:{l}" for l, r in PORTS.items()])
+
+  arch_args = load_json(os.path.join("config", "arch_args.json"))[arch]
+
+  cmds = [
+    f"qemu-system-{arch}", 
+    # "-nographic",
+    "-smp", "8",
+    "-m", "8G",
+    "-drive", f"file={image}",
+    "-device", f"virtio-net-pci,netdev=n0,mac={mac}",
+    "-netdev", f"user,id=n0,net=10.0.2.0/24,{fwds}",
+    *arch_args
+  ]
+
+  if iso:
+    cmds.extend(["-cdrom", os.path.join(RUN_DIR, "data", "composer-init.iso")])
+
+  return subprocess.run(cmds, check=False)
+
+def main(arch, distro, host, port):
+  base_image_path = get_image_location(arch, distro)
+  basename = os.path.splitext(os.path.basename(base_image_path))[0]
+  image = os.path.join(OVERLAY_DIR, f"{basename}-{distro}.qcow2")
+  iso = None
+
+  new_image = not os.path.exists(image)
+  if new_image:
+    mk_overlay(base_image_path, image)
+    mk_user_data(get_user(), get_pubkey(), get_repos(arch, distro))
+    mk_metadata(image_name=distro)
+    iso = "composer-init.iso"
+    mk_cloud_init(iso)
+
+  mk_user_data(get_user(), get_pubkey(), get_repos(arch, distro))
+  try:
+    start(image, arch, iso)
+  except KeyboardInterrupt:
+    echo("Keyboard interrupt, aborting", "OK")
+    sys.exit(0)
+
+def parse_args():
+  parser = argparse.ArgumentParser()
+  parser.add_argument("-a", "--arch", help="Architecture", default="x86_64", type=str)
+  parser.add_argument("-d", "--distro", help="Distro", type=str, required=True)
+  parser.add_argument("--host", type=str, default="localvm", help="Remote host")
+  parser.add_argument("-p", "--port", type=str, default="2222", help="Remote port")
+  if len(sys.argv) == 1:
+    parser.print_help()
+  return parser.parse_args()
+
+if __name__ == "__main__":
+  args = parse_args()
+  main(args.arch, args.distro, args.host, args.port)

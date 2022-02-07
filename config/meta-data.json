@@ -1,0 +1,4 @@
+{
+  "instance-id": "nocloud",
+  "local-hostname": "${image_name}-${image_name}-vm"
+}

@@ -1,0 +1,46 @@
+{
+  "x86_64": {
+    "fedora33": "Fedora-Cloud-Base-33-1.2.x86_64.qcow2",
+    "fedora34": "Fedora-Cloud-Base-34-1.2.x86_64.qcow2",
+    "fedora35": "",
+    "rhel84": "rhel-guest-image-8.4-645.x86_64.qcow2",
+    "rhel85": "rhel-guest-image-8.5-833.x86_64.qcow2",
+    "rhel86": "rhel-guest-image-8.6-952.x86_64.qcow2",
+    "rhel90": "rhel-guest-image-9.0-20210914.4.x86_64.qcow2",
+    "centos8": "",
+    "centos9": ""
+  },
+  "aarch": {
+    "fedora33": "Fedora-Cloud-Base-33-1.2.aarch64.qcow2",
+    "fedora34": "Fedora-Cloud-Base-34-1.2.aarch64.qcow2",
+    "fedora35": "",
+    "rhel84": "rhel-guest-image-8.4-671.aarch64.qcow2",
+    "rhel85": "rhel-guest-image-8.5-713.aarch64.qcow2",
+    "rhel86": "rhel-guest-image-9.0-20210920.5.aarch64.qcow2",
+    "rhel90": "",
+    "centos8": "",
+    "centos9": ""
+  },
+  "ppc": {
+    "fedora33": "",
+    "fedora34": "",
+    "fedora35": "",
+    "rhel84": "",
+    "rhel85": "rhel-guest-image-8.5-739.ppc64le.qcow2",
+    "rhel86": "",
+    "rhel90": "",
+    "centos8": "",
+    "centos9": ""
+  },
+  "s390x": {
+    "fedora33": "",
+    "fedora34": "",
+    "fedora35": "",
+    "rhel84": "",
+    "rhel85": "rhel-guest-image-8.5-739.s390x.qcow2",
+    "rhel86": "",
+    "rhel90": "",
+    "centos8": "",
+    "centos9": ""
+  }
+}

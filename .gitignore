@@ -153,7 +153,7 @@ dmypy.json
 cython_debug/
 
 scratch/*
-data/oscap/**/*
-data/images/*.qcow2
-data/images/*.iso
-data/manifests/*
+reports/**/*
+images/*.qcow2
+images/*.iso
+manifests/*

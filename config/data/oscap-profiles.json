@@ -1,0 +1,27 @@
+{
+  "fedora": {
+    "ospp": {
+        "datastream": "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml",
+        "profile": "xccdf_org.ssgproject.content_profile_ospp"
+    },
+    "dss": {
+        "datastream": "/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml",
+        "profile": "xccdf_org.ssgproject.content_profile_pci-dss"
+    }
+  },
+  "rhel8": {
+    "cis": {
+        "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
+        "profile": "xccdf_org.ssgproject.content_profile_cis"
+    },
+    "ospp": {
+        "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
+        "profile": "xccdf_org.ssgproject.content_profile_ospp"
+    },
+    "disa": {
+        "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
+        "profile": "xccdf_org.ssgproject.content_profile_stig"
+    }
+  },
+  "rhel9": {}
+}

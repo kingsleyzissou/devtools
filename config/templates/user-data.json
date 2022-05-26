@@ -14,7 +14,6 @@
       "ssh_authorized_keys": []
     }
   ],
-  "timezone": "CET",
   "chpasswd": {
     "list": "root:r\nkingsley:password42\n",
     "expire": false
@@ -31,7 +30,13 @@
     "podman",
     "osbuild-composer",
     "composer-cli",
-    "cockpit"
+    "cockpit",
+    "nodejs",
+    "npm",
+    "koji",
+    "openssl",
+    "openscap-scanner",
+    "scap-security-guide"
   ],
   "manage_resolv_conf": true,
   "resolv_conf": {
@@ -46,7 +51,10 @@
     "cd /home/kingsley/projects/osbuild && git clone https://github.com/osbuild/osbuild-composer",
     "sudo mkdir -p /etc/osbuild-composer/repositories/",
     "sudo cp -r /home/kingsley/projects/osbuild/osbuild-composer/test/data/repositories/. /etc/osbuild-composer/repositories/.",
+    "sudo chown -R kingsley:kingsley /home/kingsley/projects",
     "sudo systemctl enable --now osbuild-composer.socket",
-    "sudo systemctl enable --now cockpit.socket"
+    "sudo systemctl enable --now cockpit.socket",
+    "git config --global user.email testvm@osbuild.org",
+    "git config --global user.name kingsley"
   ]
 }

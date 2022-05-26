@@ -1,23 +1,18 @@
 import subprocess
 from tools import echo
 
-from .remove import remove
-
 def run(compose, host, port):
     output = subprocess.run([
       "ssh", "-q", host, "-p", port,
-      "composer-cli", "compose", "cancel", compose
+      "composer-cli", "compose", "delete", compose
     ], encoding="utf-8")
 
     if output.returncode == 0:
-        echo("Compose cancelled", "OK")
+        echo("Compose deleted", "OK")
         return output.returncode
 
     echo(output.stdout, "DANGER")
     return output.returncode
 
-def cancel(args):
-    r =  run(args.compose, args.host, args.port)
-    if r == 0:
-        return remove(args)
-    return 1
+def delete(args):
+    return run(args.compose, args.host, args.port)

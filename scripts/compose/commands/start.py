@@ -17,5 +17,5 @@ def run(blueprint, image_type, host, port):
     echo(output.stderr, "DANGER")
     return output.returncode
 
-def compose(args):
+def start(args):
     return run(args.blueprint, args.image_type, args.host, args.port)

@@ -10,7 +10,7 @@ def dl_tar(compose, code):
     if  code != 0:
         return code
     echo("Downloading image...")
-    r = subprocess.run(["scp", "-q", f"localvm:{compose}.tar", "./data/images/."], capture_output=True)
+    r = subprocess.run(["scp", "-q", f"localvm:{compose}.tar", "./images/."], capture_output=True)
     return r.returncode
 
 def rm_tar(compose, code, remote = False):
@@ -21,14 +21,14 @@ def rm_tar(compose, code, remote = False):
         r = subprocess.run(["ssh", "-q", "localvm", "rm", f"{compose}.tar"], capture_output=True)
         return r.returncode
     echo("Removing tar...")
-    r = subprocess.run(["rm", f"data/images/{compose}.tar"], capture_output=True)
+    r = subprocess.run(["rm", f"images/{compose}.tar"], capture_output=True)
     return r.returncode
 
 def unzip(compose, code):
     if code != 0:
         return code
     echo("Unzipping tar...")
-    r = subprocess.run(["tar", "-xvf", f"{compose}.tar", ""], cwd="data/images", capture_output=True)
+    r = subprocess.run(["tar", "-xvf", f"{compose}.tar", ""], cwd="images", capture_output=True)
     return r.returncode
 
 def mv_manifest(compose, keep, code):
@@ -36,10 +36,10 @@ def mv_manifest(compose, keep, code):
         return code
     if keep:
         echo("Moving manifest...")
-        r = subprocess.run(["mv", f"data/images/{compose}.json", "data/manifests/."], capture_output=True)
+        r = subprocess.run(["mv", f"images/{compose}.json", "manifests/."], capture_output=True)
         return r.returncode
     echo("Removing manifest...")
-    r = subprocess.run(["rm", f"data/images/{compose}.json"], capture_output=True)
+    r = subprocess.run(["rm", f"images/{compose}.json"], capture_output=True)
     return r.returncode
 
 def run(compose, keep_manifest):

@@ -1,0 +1,89 @@
+name = "osbuild"
+description = "osbuild developer image"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+ 
+[[packages]]
+name = "osbuild"
+version = "*"
+
+[[packages]]
+name = "osbuild-composer"
+version = "*"
+
+[[packages]]
+name = "composer-cli"
+version = "*"
+
+[[packages]]
+name = "cockpit"
+version = "*"
+
+[[packages]]
+name = "openscap-scanner"
+version = "*"
+
+[[packages]]
+name = "scap-security-guide"
+version = "*"
+
+[[packages]]
+name = "go"
+version = "*"
+
+[[packages]]
+name = "make"
+version = "*"
+
+[[packages]]
+name = "git"
+version = "*"
+
+[[packages]]
+name = "git"
+version = "*"
+
+[[packages]]
+name = "rpm-build"
+version = "*"
+
+[[packages]]
+name = "krb5-devel"
+version = "*"
+
+[[packages]]
+name = "jq"
+version = "*"
+
+[[packages]]
+name = "zsh"
+version = "*"
+
+[[packages]]
+name = "npm"
+version = "*"
+
+[[packages]]
+name = "nodejs"
+version = "*"
+
+[[packages]]
+name = "podman"
+version = "*"
+
+[[customizations.user]]
+name = "kingsley"
+description = "Administrator account"
+password = "password42"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
+home = "/home/kingsley/"
+shell = "/usr/bin/zsh"
+groups = ["wheel", "systemd-journal"]
+
+[customizations.timezone]
+timezone = "Europe/Dublin"
+
+[customizations.services]
+enabled = ["osbuild-composer.socket","cockpit.socket"]

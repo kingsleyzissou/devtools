@@ -1,0 +1,96 @@
+name = "rhel-cis"
+description = "CIS for Red Hat Enterprise Linux 8"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+
+[[packages]]
+name = "aide"
+version = "*"
+ 
+[[packages]]
+name = "openscap-scanner"
+version = "*"
+
+[[packages]]
+name = "scap-security-guide"
+version = "*"
+
+[customizations]
+
+[[customizations.filesystem]]
+mountpoint = "/"
+size = 2147483648
+
+[[customizations.filesystem]]
+mountpoint = "/var"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/var/log"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/var/log/audit"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/usr"
+size = 2147483648
+
+[[customizations.filesystem]]
+mountpoint = "/home"
+size = 2147483648
+
+[[customizations.filesystem]]
+mountpoint = "/var/tmp"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/tmp"
+size = 131072000
+
+[[customizations.user]]
+name = "kingsley"
+description = "Administrator account"
+password = "$6$b/oXN5xGcuTmVdui$9T/FrBmUkcEHK5sLhg/E6sFXKa84zU3cLum3DPwppNzFhtAl6yD6SEZRe3v6hpmHtkVXYyN6qGXINJVntHpwN/"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
+home = "/home/kingsley/"
+groups = ["wheel"]
+
+
+[customizations.openscap]
+filename = "/home/kingsley/oscap-remediate-offline.conf.sh"
+profile_id = "xccdf_org.ssgproject.content_profile_cis"
+datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
+html_report = "/var/tmp/report.html"
+verbose_level = "DEVEL"
+verbose_log = "/var/tmp/oscap.log"
+
+[[packages]]
+name = "sudo"
+version = "*"
+
+[[packages]]
+name = "audit"
+version = "*"
+
+[[packages]]
+name = "rsyslog"
+version = "*"
+
+[[packages]]
+name = "firewalld"
+version = "*"
+
+[[packages]]
+name = "libselinux"
+version = "*"
+
+[customizations.kernel]
+append = "audit_backlog_limit=8192 audit=1"
+
+[customizations.services]
+enabled = ["crond","firewalld","rsyslog","auditd"]
+disabled = ["snmpd","smb","squid","cups","ypserv","rsyncd","nfs-server","rpcbind","slapd","dovecot","httpd","vsftpd","named","dhcpd","avahi-daemon","autofs"]

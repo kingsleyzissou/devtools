@@ -1,0 +1,11 @@
+name = "noexplicitroot"
+description = "no explicit rootfs defined"
+version = "0.0.1"
+modules = []
+groups = []
+[[packages]]
+name = "vim-enhanced"
+version = "*"
+[[customizations.filesystem]]
+mountpoint = "/data"
+size = 2147483648

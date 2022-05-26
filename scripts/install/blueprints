@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+import os, sys
+
+BOLD = '\033[1m'
+RESET = '\033[0m'
+LEVELS = {
+    "OK": { "color": '\033[32m', "level": "Ok" },
+    "INFO": { "color": '\033[33m', "level": "Info" },
+    "ERROR": { "color": '\033[31m', "level": "Error" },
+}
+
+def __color(level):
+    return LEVELS[level]['color']
+
+def __level(level):
+    return LEVELS[level]['level']
+
+def echo(message, level = "INFO"):
+    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+
+def initialize():
+    push_blueprints()
+
+def push_blueprints(directory="/home/kingsley/projects/osbuild/blueprints"):
+    echo("Pushing blueprints...")
+    path = os.path.join(directory, "*")
+    os.system(f"composer-cli blueprints push {path}")
+    list_blueprints()
+
+def list_blueprints():
+    os.system("composer-cli blueprints list")
+
+def main():
+    initialize()
+    echo("Blueprints added", "OK")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,81 @@
+#!/usr/bin/python3
+import os, sys, subprocess
+
+REPO_DIR = os.path.join(os.sep, "etc", "osbuild-composer", "repositories")
+BIN_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer")
+TEST_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer-test")
+COMPOSER_DIR = os.path.join("projects", "osbuild", "osbuild-composer")
+BOLD = '\033[1m'
+RESET = '\033[0m'
+LEVELS = {
+    "OK": { "color": '\033[32m', "level": "Ok" },
+    "INFO": { "color": '\033[33m', "level": "Info" },
+    "ERROR": { "color": '\033[31m', "level": "Error" },
+}
+
+def __color(level):
+    return LEVELS[level]['color']
+
+def __level(level):
+    return LEVELS[level]['level']
+
+def echo(message, level = "INFO"):
+    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+
+def run_command(cmd, step, **args) -> None:
+    try:
+        subprocess.run(cmd, check=True, **args)
+    except Exception as e:
+        echo(f"Error carrying out {step} step", "ERROR")
+        print(e)
+        sys.exit(1)
+
+def initialize() -> None:
+    echo("Initializing composer install...")
+    stop_service()
+
+def stop_service() -> None:
+    echo("Stopping composer service...")
+    run_command(["sudo", "systemctl", "stop", "osbuild-*.service"], step="stop")
+    build()
+
+def build() -> None:
+    echo("Building composer binaries...")
+    run_command(["mkdir", "-p", f"{COMPOSER_DIR}/bin"], step="build")
+    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-composer"], cwd=COMPOSER_DIR, step="build")
+    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-worker"], cwd=COMPOSER_DIR, step="build")
+    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-mock-openid-provider"], cwd=COMPOSER_DIR, step="build")
+    install()
+
+def install() -> None:
+    echo("Installing composer...")
+    run_command(["sudo", "rm", "-rf", BIN_DIR], step="installation")
+    run_command(["sudo", "make", "install"], cwd=COMPOSER_DIR, step="installation")
+    run_command(["sudo", "cp", "-v", "./bin/osbuild-mock-openid-provider", BIN_DIR], cwd=COMPOSER_DIR, step="installation")
+    copy_repos()
+
+def copy_repos() -> None:
+    echo("Copying repositories...")
+    run_command(["sudo", "rm", "-vfr", REPO_DIR], step="post install")
+    run_command(["sudo", "mkdir", "-p", REPO_DIR], step="post install")
+    run_command(["sudo", "cp", "-r", f"{COMPOSER_DIR}/test/data/repositories", "/etc/osbuild-composer/"], step="post install")
+    copy_tools()
+
+def copy_tools() -> None:
+    echo("Copying test tools...")
+    run_command(["sudo", "mkdir", "-p", TEST_DIR], step="post install")
+    run_command(["sudo", "cp", "-vr", f"{COMPOSER_DIR}/tools", TEST_DIR], step="post install")
+    start_service()
+
+def start_service() -> None:
+    echo("Starting composer...")
+    run_command(["sudo", "systemctl", "restart", "osbuild-composer.service"], step="start")
+    run_command(["sudo", "systemctl", "restart", "osbuild-dnf-json.socket"], step="start")
+
+def main():
+    stop_service()
+    echo("Composer installed successfully", "OK")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())

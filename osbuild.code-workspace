@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+        {
+            "path": "../osbuild-composer"
+        },
+        {
+            "path": "../image-builder"
+        },
+        {
+            "path": "../image-builder-frontend"
+        },
+        {
+            "path": "../osbuild"
+        }
+    ],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "devel"
+    }
+}

@@ -1,6 +1,36 @@
 {
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true,
-    "editor.tabSize": 4,
-    "editor.detectIndentation": false
+  "window.zoomLevel": 1,
+  "files.autoSave": "afterDelay",
+  "editor.fontSize": 16,
+  "editor.lineHeight": 40,
+  "workbench.colorTheme": "Horizon",
+  "editor.minimap.enabled": false,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.renderWhitespace": "none", // removes whitespace chars
+  "editor.hideCursorInOverviewRuler": true, // hides cursor mark in the overview ruler
+  "editor.folding": false, // removes the folding feature
+  "editor.glyphMargin": true, // removes the space used mainly for debugging indicators
+  "explorer.openEditors.visible": 0, // removes the open editors section at the top of the sidebar, you can see the opened files with ⌘ + ⌥ + Tab
+  "workbench.statusBar.visible": true,
+  "editor.overviewRulerBorder": false,
+  "workbench.editor.showIcons": true, // removes icon from opened files in tabs
+  "editor.occurrencesHighlight": false,
+  "zenMode.hideStatusBar": false,
+  "editor.suggest.statusBar.visible": true,
+  "breadcrumbs.enabled": false,
+  "workbench.editor.showTabs": false,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "vim.insertModeKeyBindings": [
+   {
+       "before": ["<C-a>"],
+       "after": ["<esc>", "l", "a"]
+   },
+   {
+     "before": ["<C-w>"],
+     "after": ["<C-O>", ":", "w", "enter"]
+   }
+]
 }

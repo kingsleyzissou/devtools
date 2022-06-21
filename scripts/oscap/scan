@@ -1,0 +1,59 @@
+#!/usr/bin/python3
+
+import argparse, subprocess, sys
+
+from tools import echo, load_json
+
+def get_benchmark(distro, profile):
+    profiles = load_json("./config/data/oscap-profiles.json")
+    try:
+        return profiles[distro][profile]
+    except Exception:
+        echo(f"{profile} not available for {distro} distro", "ERROR")
+        sys.exit(1)
+
+def remote_command(host, port, pretty):
+    if not pretty:
+        return ["oscap-ssh", host, port]
+    return ["ssh", "-tt", "-p", port, host, "oscap"]
+
+def run(args):
+    p = get_benchmark(args.distro, args.profile)
+
+    cmd = [
+        *remote_command(args.host, args.port, args.pretty),
+        "xccdf", "eval",
+        "--profile", p["profile"]
+    ]
+
+    if args.results_arf:
+        cmd.extend(["--results-arf", args.results_arf])
+
+    if args.results:
+        cmd.extend(["--results", args.results])
+
+    if args.report:
+        cmd.extend(["--report", args.report])
+
+    cmd.extend([p["datastream"]])
+
+    subprocess.run(cmd)
+    return 0
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--distro", help="Distro", type=str)
+    parser.add_argument("-b", "--profile", help="Openscap profile", type=str)
+    parser.add_argument("--host", type=str, default="localvm", help="Remote host")
+    parser.add_argument("-p", "--port", type=str, default="2222", help="Remote port")
+    parser.add_argument("--pretty", help="Display pretty", default=False, action="store_false")
+    parser.add_argument("--results-arf", type=str, help="ARF Results file")
+    parser.add_argument("--results", type=str, help="Results file")
+    parser.add_argument("--report", type=str, help="Report file")
+    return parser.parse_args()
+
+def scan():
+    sys.exit(run(parse_args()))
+
+if __name__ == "__main__":
+    sys.exit(run(parse_args()))

@@ -42,10 +42,6 @@ name = "git"
 version = "*"
 
 [[packages]]
-name = "git"
-version = "*"
-
-[[packages]]
 name = "rpm-build"
 version = "*"
 
@@ -73,12 +69,16 @@ version = "*"
 name = "podman"
 version = "*"
 
+[[packages]]
+name = "openssl"
+version = "*"
+
 [[customizations.user]]
 name = "kingsley"
 description = "Administrator account"
 password = "password42"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
-home = "/home/kingsley/"
+home = "/home/kingsley"
 shell = "/usr/bin/zsh"
 groups = ["wheel", "systemd-journal"]
 

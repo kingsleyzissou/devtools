@@ -13,7 +13,7 @@ def run(compose, host, port):
         echo("Compose cancelled", "OK")
         return output.returncode
 
-    echo(output.stdout, "DANGER")
+    echo(output.stdout, "ERROR")
     return output.returncode
 
 def cancel(args):

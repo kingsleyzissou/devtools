@@ -11,7 +11,7 @@ def run(compose, host, port):
         echo("Compose deleted", "OK")
         return output.returncode
 
-    echo(output.stdout, "DANGER")
+    echo(output.stdout, "ERROR")
     return output.returncode
 
 def delete(args):

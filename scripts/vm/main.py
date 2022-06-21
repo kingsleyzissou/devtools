@@ -12,7 +12,7 @@ def run(overlay, command):
     for entry_point in pkg_resources.iter_entry_points('vm_commands'):
         if entry_point.name == command:
             return entry_point.load()(overlay)
-    echo("Unknown command", "DANGER")
+    echo("Unknown command", "ERROR")
     return 1
 
 def main():

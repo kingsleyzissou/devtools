@@ -38,6 +38,7 @@ def initialize() -> None:
 def build() -> None:
     echo("Building...")
     run_command(["npm", "run", "build"], cwd=COCKPIT_DIR, step="build")
+    install()
 
 def install() -> None:
     src = os.path.join(os.path.expanduser("~"), COCKPIT_DIR, "public", "dist")

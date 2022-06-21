@@ -4,7 +4,8 @@ import os, sys, subprocess
 REPO_DIR = os.path.join(os.sep, "etc", "osbuild-composer", "repositories")
 BIN_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer")
 TEST_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer-test")
-COMPOSER_DIR = os.path.join("projects", "osbuild", "osbuild-composer")
+# COMPOSER_DIR = os.path.join("projects", "osbuild", "osbuild-composer")
+COMPOSER_DIR = os.path.join('..', 'osbuild-composer')
 BOLD = '\033[1m'
 RESET = '\033[0m'
 LEVELS = {
@@ -70,7 +71,6 @@ def copy_tools() -> None:
 def start_service() -> None:
     echo("Starting composer...")
     run_command(["sudo", "systemctl", "restart", "osbuild-composer.service"], step="start")
-    run_command(["sudo", "systemctl", "restart", "osbuild-dnf-json.socket"], step="start")
 
 def main():
     stop_service()

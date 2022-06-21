@@ -15,7 +15,7 @@ setuptools.setup(
     entry_points={
         'console_scripts': [
             'vm = scripts.vm:main',
-            'symp = scripts.compose:main',
+            'compose = scripts.compose:main',
             'rcp = scripts.sync:main'
         ],
         'vm_commands': [

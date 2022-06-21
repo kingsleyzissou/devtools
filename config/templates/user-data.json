@@ -33,7 +33,6 @@
     "cockpit",
     "nodejs",
     "npm",
-    "koji",
     "openssl",
     "openscap-scanner",
     "scap-security-guide"
@@ -46,15 +45,15 @@
     ]
   },
   "runcmd": [
-    "sudo usermod -aG weldr,systemd-journal kingsley",
     "sudo mkdir -p /home/kingsley/projects/osbuild",
     "cd /home/kingsley/projects/osbuild && git clone https://github.com/osbuild/osbuild-composer",
     "sudo mkdir -p /etc/osbuild-composer/repositories/",
-    "sudo cp -r /home/kingsley/projects/osbuild/osbuild-composer/test/data/repositories/. /etc/osbuild-composer/repositories/.",
     "sudo chown -R kingsley:kingsley /home/kingsley/projects",
     "sudo systemctl enable --now osbuild-composer.socket",
     "sudo systemctl enable --now cockpit.socket",
-    "git config --global user.email testvm@osbuild.org",
-    "git config --global user.name kingsley"
+    "sudo cp -r /home/kingsley/projects/osbuild/osbuild-composer/test/data/repositories/. /etc/osbuild-composer/repositories/.",
+    "sudo usermod -aG weldr,systemd-journal kingsley",
+    "git config --system user.email testvm@osbuild.org",
+    "git config --system user.name kingsley"
   ]
 }

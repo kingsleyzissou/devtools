@@ -1,5 +1,4 @@
 qemu-system-${arch} \
--nographic \
 -smp 8 \
 -m 8G \
 -drive file=${image},format=qcow2 \

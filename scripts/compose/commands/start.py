@@ -14,7 +14,8 @@ def run(blueprint, image_type, host, port):
         print(c["body"]["build_id"])
         return output.returncode
 
-    echo(output.stderr, "ERROR")
+    err = json.loads(output.stdout)
+    echo(err["body"]["errors"][0]["msg"], "ERROR")
     return output.returncode
 
 def start(args):

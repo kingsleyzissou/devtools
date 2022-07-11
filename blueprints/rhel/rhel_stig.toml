@@ -53,8 +53,8 @@ groups = ["wheel"]
 
 
 [customizations.openscap]
-filename = "oscap-remediate-offline.conf.sh"
-benchmark = "stig"
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "stig"
 
 [[packages]]
 name = "rng-tools"
@@ -102,10 +102,6 @@ version = "*"
 
 [[packages]]
 name = "usbguard"
-version = "*"
-
-[[packages]]
-name = "lynx"
 version = "*"
 
 [customizations.kernel]

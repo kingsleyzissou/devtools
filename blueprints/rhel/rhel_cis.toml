@@ -8,14 +8,6 @@ distro = ""
 [[packages]]
 name = "aide"
 version = "*"
- 
-[[packages]]
-name = "openscap-scanner"
-version = "*"
-
-[[packages]]
-name = "scap-security-guide"
-version = "*"
 
 [customizations]
 
@@ -60,8 +52,8 @@ home = "/home/kingsley/"
 groups = ["wheel"]
 
 [customizations.openscap]
-filename = "oscap-remediate-offline.conf.sh"
-benchmark = "cis"
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "cis"
 
 [[packages]]
 name = "sudo"

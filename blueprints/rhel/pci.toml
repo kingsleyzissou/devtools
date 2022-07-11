@@ -1,9 +1,15 @@
-name = "cis"
-description = "CIS for Red Hat Enterprise Linux 8"
+name = "pci"
+description = "PCI-DSS for Red Hat Enterprise Linux 8"
 version = "0.0.1"
 modules = []
 groups = []
 distro = ""
+
+[[packages]]
+name = "aide"
+version = "*"
+
+[customizations]
 
 [[customizations.user]]
 name = "kingsley"
@@ -13,5 +19,7 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4h
 home = "/home/kingsley/"
 groups = ["wheel"]
 
+
 [customizations.openscap]
-profile_id = "cis"
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "pci-dss"

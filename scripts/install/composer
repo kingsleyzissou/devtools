@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-import os, sys, subprocess
+import os, subprocess, sys
 
 REPO_DIR = os.path.join(os.sep, "etc", "osbuild-composer", "repositories")
 BIN_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer")
 TEST_DIR = os.path.join(os.sep, "usr", "libexec", "osbuild-composer-test")
-# COMPOSER_DIR = os.path.join("projects", "osbuild", "osbuild-composer")
-COMPOSER_DIR = os.path.join('..', 'osbuild-composer')
+COMPOSER_DIR = os.path.join("projects", "osbuild", "osbuild-composer")
 BOLD = '\033[1m'
 RESET = '\033[0m'
 LEVELS = {
@@ -21,7 +20,7 @@ def __level(level):
     return LEVELS[level]['level']
 
 def echo(message, level = "INFO"):
-    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
 
 def run_command(cmd, step, **args) -> None:
     try:
@@ -42,10 +41,10 @@ def stop_service() -> None:
 
 def build() -> None:
     echo("Building composer binaries...")
-    run_command(["mkdir", "-p", f"{COMPOSER_DIR}/bin"], step="build")
-    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-composer"], cwd=COMPOSER_DIR, step="build")
-    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-worker"], cwd=COMPOSER_DIR, step="build")
-    run_command(["go", "build", "-o", "bin/", "./cmd/osbuild-mock-openid-provider"], cwd=COMPOSER_DIR, step="build")
+    run_command(["sudo", "mkdir", "-p", f"{COMPOSER_DIR}/bin"], step="build")
+    run_command(["sudo", "go", "build", "-o", "bin/", "./cmd/osbuild-composer"], cwd=COMPOSER_DIR, step="build")
+    run_command(["sudo", "go", "build", "-o", "bin/", "./cmd/osbuild-worker"], cwd=COMPOSER_DIR, step="build")
+    run_command(["sudo", "go", "build", "-o", "bin/", "./cmd/osbuild-mock-openid-provider"], cwd=COMPOSER_DIR, step="build")
     install()
 
 def install() -> None:

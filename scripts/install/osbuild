@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys, subprocess
+import os, subprocess, sys
 
 OSBUILD_DIR = os.path.join(os.path.expanduser("~"), "projects", "osbuild", "osbuild")
 BOLD = '\033[1m'
@@ -17,7 +17,7 @@ def __level(level):
     return LEVELS[level]['level']
 
 def echo(message, level = "INFO"):
-    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
 
 def run_command(cmd, step, **args) -> None:
     try:
@@ -27,7 +27,7 @@ def run_command(cmd, step, **args) -> None:
         sys.exit(1)
 
 def initialize() -> None:
-    echo("Cleaining git tree...")
+    echo("Cleaning git tree...")
     run_command(["git", "clean", "-xdf"], cwd=OSBUILD_DIR, step="setup")
     run_command(["git", "commit", ".", "-m", "wip", "--allow-empty"], cwd=OSBUILD_DIR, step="setup")
     build_deps()

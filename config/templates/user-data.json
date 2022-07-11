@@ -21,7 +21,7 @@
   "repo_update": true,
   "repo_upgrade": "all",
   "packages": [
-    "go",
+    "golang",
     "make",
     "rpm-build",
     "jq",
@@ -35,7 +35,9 @@
     "npm",
     "openssl",
     "openscap-scanner",
-    "scap-security-guide"
+    "scap-security-guide",
+    "gpgme-devel",
+    "libassuan-devel"
   ],
   "manage_resolv_conf": true,
   "resolv_conf": {

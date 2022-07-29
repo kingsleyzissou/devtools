@@ -14,11 +14,11 @@
         "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
         "profile": "xccdf_org.ssgproject.content_profile_cis"
     },
-    "ospp": {
+    "pci": {
         "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
-        "profile": "xccdf_org.ssgproject.content_profile_ospp"
+        "profile": "xccdf_org.ssgproject.content_profile_pci-dss"
     },
-    "disa": {
+    "stig": {
         "datastream": "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml",
         "profile": "xccdf_org.ssgproject.content_profile_stig"
     }

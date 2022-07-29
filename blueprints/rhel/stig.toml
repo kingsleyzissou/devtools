@@ -1,0 +1,42 @@
+name = "stig"
+description = "STIG for Red Hat Enterprise Linux 8"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+
+[[packages]]
+name = "aide"
+version = "*"
+
+[customizations]
+
+[[customizations.user]]
+name = "kingsley"
+description = "Administrator account"
+password = "$6$b/oXN5xGcuTmVdui$9T/FrBmUkcEHK5sLhg/E6sFXKa84zU3cLum3DPwppNzFhtAl6yD6SEZRe3v6hpmHtkVXYyN6qGXINJVntHpwN/"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
+home = "/home/kingsley/"
+groups = ["wheel"]
+
+[[packages]]
+name = "tmux"
+version = "*"
+
+[customizations.openscap]
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "stig"
+datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
+
+
+sudo oscap-vm image images/547b4152-6a41-4665-a73b-4fea826de47d-disk.qcow2 \
+oscap xccdf eval \
+  --results reports/stig.xml \
+  --report reports/stig.html \
+  --profile xccdf_org.ssgproject.content_profile_stig \
+ /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+
+ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=5 kingsley@localhost -p 2223 \
+ cat reports/pci.xml \
+ | xmlstarlet sel -N x="http://checklists.nist.gov/xccdf/1.2" -t -v "//x:rule-result[@severity='high']" \
+ | grep fail   

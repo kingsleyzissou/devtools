@@ -51,10 +51,10 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4h
 home = "/home/kingsley/"
 groups = ["wheel"]
 
-
 [customizations.openscap]
 data_dir = "/home/kingsley/openscap_data"
 profile_id = "stig"
+datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
 
 [[packages]]
 name = "rng-tools"
@@ -108,5 +108,5 @@ version = "*"
 append = "slub_debug=P page_poison=1 vsyscall=none pti=on audit_backlog_limit=8192 audit=1"
 
 [customizations.services]
-enable = ["usbguard","sshd","rngd","fapolicyd","firewalld","rsyslog","auditd"]
-disable = ["kdump","systemd-coredump","autofs","debug-shell"]
+enabled = ["usbguard","sshd","rngd","fapolicyd","firewalld","rsyslog","auditd"]
+disabled = ["kdump","systemd-coredump","autofs","debug-shell"]

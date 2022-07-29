@@ -154,6 +154,6 @@ cython_debug/
 
 scratch/*
 reports/**/*
-images/*.qcow2
+images/**/*.qcow2
 images/*.iso
 manifests/*

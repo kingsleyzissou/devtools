@@ -2,8 +2,8 @@
 # Info
 ###############################################################################
 
-name = "fs"
-description = "Basic image with fs config"
+name = "filesystem"
+description = "Filesystem image - for oscap demo"
 version = "0.0.1"
 modules = []
 groups = []

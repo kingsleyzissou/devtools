@@ -3,7 +3,7 @@
 ###############################################################################
 
 name = "oscap"
-description = "osbuild image with oscap build remediation - CIS benchmark"
+description = "oscap cis/rhel8.7 remediated image - for oscap demo"
 version = "0.0.1"
 modules = []
 groups = []

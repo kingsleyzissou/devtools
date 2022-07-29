@@ -12,6 +12,13 @@ def get_benchmark(distro, profile):
         echo(f"{profile} not available for {distro} distro", "ERROR")
         sys.exit(1)
 
+def download(host, port, file):
+    subprocess.run([
+        "scp", "-q", "-P", port,
+        f"kingsley@{host}:{file}",
+        "reports/."
+    ])
+
 def remote_command(host, port, pretty):
     if not pretty:
         return ["oscap-ssh", host, port]
@@ -35,9 +42,18 @@ def run(args):
     if args.report:
         cmd.extend(["--report", args.report])
 
+    if args.remediate:
+        cmd.extend(["--remediate"])
+
     cmd.extend([p["datastream"]])
 
     subprocess.run(cmd)
+
+    if args.pretty:
+        if args.remediate:
+            download(args.host, args.port, args.remediate)
+        if args.results:
+            download(args.host, args.port, args.results)
     return 0
 
 def parse_args():
@@ -46,10 +62,11 @@ def parse_args():
     parser.add_argument("-b", "--profile", help="Openscap profile", type=str)
     parser.add_argument("--host", type=str, default="localvm", help="Remote host")
     parser.add_argument("-p", "--port", type=str, default="2222", help="Remote port")
-    parser.add_argument("--pretty", help="Display pretty", default=False, action="store_false")
+    parser.add_argument("--pretty", help="Display pretty", default=False, action="store_true")
     parser.add_argument("--results-arf", type=str, help="ARF Results file")
     parser.add_argument("--results", type=str, help="Results file")
     parser.add_argument("--report", type=str, help="Report file")
+    parser.add_argument("--remediate", help="Attempt remediation", default=False, action="store_true")
     return parser.parse_args()
 
 def scan():

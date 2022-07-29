@@ -50,10 +50,11 @@ def run(args):
     subprocess.run(cmd)
 
     if args.pretty:
-        if args.remediate:
-            download(args.host, args.port, args.remediate)
+        if args.report:
+            download(args.host, args.port, args.report)
         if args.results:
             download(args.host, args.port, args.results)
+
     return 0
 
 def parse_args():

@@ -20,7 +20,7 @@ class BaseImage:
         self.arch = arch
         self.distro = distro
         self.ports = ports
-        self.simple = simple or not location is None
+        self.simple = simple or location is not None
         self.get_image_location(location)
         if prepare:
             self.prepare_image()
@@ -41,10 +41,9 @@ class BaseImage:
             sys.exit(1)
 
     def get_repos(self) -> None:
-        if not self.distro.startswith("rhel"):
-            return {}
+        repos = {}
 
-        if self.distro.startswith("rhel8"):
+        if self.distro.startswith("rhel8") or self.distro.startswith("centos8"):
             repos = load_json("./config/data/rhel8-repos.json")
             if not self.arch == "x86_64":
                 del repos["rt"]

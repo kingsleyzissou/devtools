@@ -30,7 +30,7 @@ name = "scap-security-guide"
 version = "*"
 
 [[packages]]
-name = "go"
+name = "golang"
 version = "*"
 
 [[packages]]
@@ -71,6 +71,14 @@ version = "*"
 
 [[packages]]
 name = "openssl"
+version = "*"
+
+[[packages]]
+name = "gpgme-devel"
+version = "*"
+
+[[packages]]
+name = "libassuan-devel"
 version = "*"
 
 [[customizations.user]]

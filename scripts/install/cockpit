@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys, subprocess
+import os, subprocess, sys
 
 PROJECT_DIR = os.path.join("projects", "osbuild")
 COCKPIT_DIR = os.path.join("projects", "osbuild", "cockpit-composer")
@@ -18,7 +18,7 @@ def __level(level):
     return LEVELS[level]['level']
 
 def echo(message, level = "INFO"):
-    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
 
 def run_command(cmd, step, **args) -> None:
     try:

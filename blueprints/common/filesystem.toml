@@ -1,0 +1,70 @@
+###############################################################################
+# Info
+###############################################################################
+
+name = "filesystem"
+description = "Filesystem image - for oscap demo"
+version = "0.0.1"
+modules = []
+groups = []
+distro = ""
+
+###############################################################################
+# Packages
+###############################################################################
+
+[[packages]]
+name = "openscap-scanner"
+version = "*"
+
+[[packages]]
+name = "scap-security-guide"
+version = "*"
+
+###############################################################################
+# Users
+###############################################################################
+
+[[customizations.user]]
+name = "kingsley"
+description = "Administrator account"
+password = "$6$b/oXN5xGcuTmVdui$9T/FrBmUkcEHK5sLhg/E6sFXKa84zU3cLum3DPwppNzFhtAl6yD6SEZRe3v6hpmHtkVXYyN6qGXINJVntHpwN/"
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
+home = "/home/kingsley/"
+groups = ["wheel"]
+
+###############################################################################
+# Filesystem
+###############################################################################
+
+[[customizations.filesystem]]
+mountpoint = "/"
+size = 2147483648
+
+[[customizations.filesystem]]
+mountpoint = "/var"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/var/log"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/var/log/audit"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/usr"
+size = 4294967296
+
+[[customizations.filesystem]]
+mountpoint = "/home"
+size = 2147483648
+
+[[customizations.filesystem]]
+mountpoint = "/var/tmp"
+size = 131072000
+
+[[customizations.filesystem]]
+mountpoint = "/tmp"
+size = 131072000

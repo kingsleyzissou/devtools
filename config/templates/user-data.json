@@ -20,23 +20,6 @@
   },
   "repo_update": true,
   "repo_upgrade": "all",
-  "packages": [
-    "go",
-    "make",
-    "rpm-build",
-    "jq",
-    "krb5-devel",
-    "git",
-    "podman",
-    "osbuild-composer",
-    "composer-cli",
-    "cockpit",
-    "nodejs",
-    "npm",
-    "openssl",
-    "openscap-scanner",
-    "scap-security-guide"
-  ],
   "manage_resolv_conf": true,
   "resolv_conf": {
     "nameservers": [

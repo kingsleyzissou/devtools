@@ -8,8 +8,8 @@ distro = ""
 [customizations]
 
 [customizations.openscap]
-filename = "oscap-remediate-offline.conf.sh"
-benchmark = "ospp"
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "ospp"
 
 [[customizations.user]]
 name = "kingsley"

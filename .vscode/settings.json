@@ -3,7 +3,7 @@
   "files.autoSave": "afterDelay",
   "editor.fontSize": 16,
   "editor.lineHeight": 40,
-  "workbench.colorTheme": "Horizon",
+  "workbench.colorTheme": "Tokyo Night Pro",
   "editor.minimap.enabled": false,
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
@@ -24,13 +24,14 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
   "vim.insertModeKeyBindings": [
-   {
-       "before": ["<C-a>"],
-       "after": ["<esc>", "l", "a"]
-   },
-   {
-     "before": ["<C-w>"],
-     "after": ["<C-O>", ":", "w", "enter"]
-   }
-]
+    {
+        "before": ["<C-a>"],
+        "after": ["<esc>", "l", "a"]
+    },
+    {
+      "before": ["<C-w>"],
+      "after": ["<C-O>", ":", "w", "enter"]
+    }
+  ],
+  "shellcheck.exclude": ["SC1091", "SC2002"]
 }

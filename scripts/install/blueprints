@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys
+import os, subprocess, sys
 
 BOLD = '\033[1m'
 RESET = '\033[0m'
@@ -16,7 +16,7 @@ def __level(level):
     return LEVELS[level]['level']
 
 def echo(message, level = "INFO"):
-    print(f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}")
+    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
 
 def initialize():
     push_blueprints()

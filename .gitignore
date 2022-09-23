@@ -157,3 +157,4 @@ reports/**/*
 images/**/*.qcow2
 images/*.iso
 manifests/*
+blueprints/archive/*

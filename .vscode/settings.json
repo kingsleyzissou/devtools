@@ -3,7 +3,7 @@
   "files.autoSave": "afterDelay",
   "editor.fontSize": 16,
   "editor.lineHeight": 40,
-  "workbench.colorTheme": "Horizon",
+  "workbench.colorTheme": "Tokyo Night Pro",
   "editor.minimap.enabled": false,
   "editor.tabSize": 2,
   "editor.detectIndentation": false,

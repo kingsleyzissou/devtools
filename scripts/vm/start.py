@@ -1,19 +1,22 @@
-import os, string, subprocess
+import os
+import string
+import subprocess
 from tools import echo, read_file, write_file
 
 ARCH_ARGS = {
-  "x86_64": [
-    "-enable-kvm",
-    "-cpu host"
-  ],
-  "aarch": [],
-  "ppc": [],
-  "s390x": []
+    "x86_64": [
+        "-enable-kvm",
+        "-cpu host"
+    ],
+    "aarch": [],
+    "ppc": [],
+    "s390x": []
 }
+
 
 def build_cmd(overlay) -> str:
     def split_ports(forwards):
-        l,r = forwards.split(':')
+        l, r = forwards.split(':')
         return f"hostfwd=tcp::{r}-:{l}"
 
     if overlay.simple:
@@ -31,14 +34,15 @@ def build_cmd(overlay) -> str:
     if overlay.iso:
         t += " \\\n" + f"--cdrom {overlay.iso}"
 
-    # if not overlay.simple:
-    t += " \\\n" + "-nographic"
+    if not overlay.simple:
+        t += " \\\n" + "-nographic"
 
     arch_args = ARCH_ARGS[overlay.arch]
     if len(arch_args) > 0:
         t += " \\\n" + " \\\n".join(arch_args)
 
     return t
+
 
 def create_script(cmd) -> None:
     tmplt = string.Template(read_file("./config/templates/expect-template"))
@@ -47,6 +51,7 @@ def create_script(cmd) -> None:
     })
     write_file("/tmp/qemu", t)
     os.chmod("/tmp/qemu", 0o775)
+
 
 def launch() -> int:
     echo("Starting VM...", "OK")
@@ -59,6 +64,7 @@ def launch() -> int:
     except Exception:
         echo("Some weird error", "ERROR")
         return 1
+
 
 def start(overlay):
     create_script(build_cmd(overlay))

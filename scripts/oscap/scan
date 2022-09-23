@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 
-import argparse, subprocess, sys
+import argparse
+import subprocess
+import sys
 
 from tools import echo, load_json
+
 
 def get_benchmark(distro, profile):
     profiles = load_json("./config/data/oscap-profiles.json")
@@ -12,17 +15,30 @@ def get_benchmark(distro, profile):
         echo(f"{profile} not available for {distro} distro", "ERROR")
         sys.exit(1)
 
+
+def permissions(host, port, file):
+    subprocess.run([
+        "ssh", "-p", port, host,
+        "sudo", "-S",
+        "chown", "kingsley:kingsley",
+        file
+    ])
+
+
 def download(host, port, file):
+    permissions(host, port, file)
     subprocess.run([
         "scp", "-q", "-P", port,
         f"kingsley@{host}:{file}",
         "reports/."
     ])
 
+
 def remote_command(host, port, pretty):
     if not pretty:
         return ["oscap-ssh", host, port]
-    return ["ssh", "-tt", "-p", port, host, "oscap"]
+    return ["ssh", "-tt", "-p", port, host, "sudo", "oscap"]
+
 
 def run(args):
     p = get_benchmark(args.distro, args.profile)
@@ -57,21 +73,28 @@ def run(args):
 
     return 0
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--distro", help="Distro", type=str)
     parser.add_argument("-b", "--profile", help="Openscap profile", type=str)
-    parser.add_argument("--host", type=str, default="localvm", help="Remote host")
-    parser.add_argument("-p", "--port", type=str, default="2222", help="Remote port")
-    parser.add_argument("--pretty", help="Display pretty", default=False, action="store_true")
+    parser.add_argument("--host", type=str,
+                        default="localvm", help="Remote host")
+    parser.add_argument("-p", "--port", type=str,
+                        default="2222", help="Remote port")
+    parser.add_argument("--pretty", help="Display pretty",
+                        default=False, action="store_true")
     parser.add_argument("--results-arf", type=str, help="ARF Results file")
     parser.add_argument("--results", type=str, help="Results file")
     parser.add_argument("--report", type=str, help="Report file")
-    parser.add_argument("--remediate", help="Attempt remediation", default=False, action="store_true")
+    parser.add_argument("--remediate", help="Attempt remediation",
+                        default=False, action="store_true")
     return parser.parse_args()
+
 
 def scan():
     sys.exit(run(parse_args()))
+
 
 if __name__ == "__main__":
     sys.exit(run(parse_args()))

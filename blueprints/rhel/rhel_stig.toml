@@ -52,9 +52,12 @@ home = "/home/kingsley/"
 groups = ["wheel"]
 
 [customizations.openscap]
-data_dir = "/home/kingsley/openscap_data"
 profile_id = "stig"
 datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
+
+[[packages]]
+name = "dracut-fips"
+version = "*"
 
 [[packages]]
 name = "rng-tools"
@@ -64,49 +67,49 @@ version = "*"
 name = "tmux"
 version = "*"
 
-[[packages]]
-name = "opensc"
-version = "*"
+# [[packages]]
+# name = "opensc"
+# version = "*"
 
-[[packages]]
-name = "openssl-pkcs11"
-version = "*"
+# [[packages]]
+# name = "openssl-pkcs11"
+# version = "*"
 
-[[packages]]
-name = "audit"
-version = "*"
+# [[packages]]
+# name = "audit"
+# version = "*"
 
-[[packages]]
-name = "rsyslog-gnutls"
-version = "*"
+# [[packages]]
+# name = "rsyslog-gnutls"
+# version = "*"
 
-[[packages]]
-name = "rsyslog"
-version = "*"
+# [[packages]]
+# name = "rsyslog"
+# version = "*"
 
-[[packages]]
-name = "firewalld"
-version = "*"
+# [[packages]]
+# name = "firewalld"
+# version = "*"
 
-[[packages]]
-name = "policycoreutils"
-version = "*"
+# [[packages]]
+# name = "policycoreutils"
+# version = "*"
 
-[[packages]]
-name = "fapolicyd"
-version = "*"
+# [[packages]]
+# name = "fapolicyd"
+# version = "*"
 
-[[packages]]
-name = "openssh-server"
-version = "*"
+# [[packages]]
+# name = "openssh-server"
+# version = "*"
 
-[[packages]]
-name = "usbguard"
-version = "*"
+# [[packages]]
+# name = "usbguard"
+# version = "*"
 
 [customizations.kernel]
-append = "slub_debug=P page_poison=1 vsyscall=none pti=on audit_backlog_limit=8192 audit=1"
+append = "slub_debug=P page_poison=1 vsyscall=none pti=on audit_backlog_limit=8192 audit=1 fips=1 boot=/dev/sda4"
 
-[customizations.services]
-enabled = ["usbguard","sshd","rngd","fapolicyd","firewalld","rsyslog","auditd"]
-disabled = ["kdump","systemd-coredump","autofs","debug-shell"]
+# [customizations.services]
+# enabled = ["usbguard","sshd","fapolicyd","firewalld","rsyslog","auditd"]
+# disabled = ["kdump","systemd-coredump","autofs","debug-shell"]

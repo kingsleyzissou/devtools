@@ -13,17 +13,13 @@ distro = ""
 # Packages
 ###############################################################################
 
-[[packages]]
-name = "openscap-scanner"
-version = "*"
+# [[packages]]
+# name = "openscap-scanner"
+# version = "*"
 
-[[packages]]
-name = "scap-security-guide"
-version = "*"
-
-[[packages]]
-name = "aide"
-version = "*"
+# [[packages]]
+# name = "scap-security-guide"
+# version = "*"
 
 [[packages]]
 name = "sudo"

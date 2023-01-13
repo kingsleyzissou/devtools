@@ -1,0 +1,22 @@
+{
+  "distribution": "centos-8",
+  "image_requests": [
+    {
+      "architecture": "x86_64",
+      "image_type": "ami",
+      "upload_request": {
+        "type": "aws",
+        "options": {
+          "share_with_accounts": [
+            "123412341234"
+          ]
+        }
+      }
+    }
+  ],
+  "customizations": {
+    "packages": [
+      "postgresql"
+    ]
+  }
+}

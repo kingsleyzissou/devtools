@@ -1,7 +1,7 @@
 import os
 import string
 import subprocess
-from tools import echo, read_file, write_file
+from devtools import echo, read_file, write_file
 
 ARCH_ARGS = {
     "x86_64": [
@@ -32,10 +32,12 @@ def build_cmd(overlay) -> str:
     })
 
     if overlay.iso:
-        t += " \\\n" + f"--cdrom {overlay.iso}"
+        t += f"--cdrom {overlay.iso}"
 
     if not overlay.simple:
-        t += " \\\n" + "-nographic"
+        if overlay.iso:
+            t += " \\\n"
+        t += "-nographic"
 
     arch_args = ARCH_ARGS[overlay.arch]
     if len(arch_args) > 0:

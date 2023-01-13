@@ -1,9 +1,17 @@
-name = "rhel-stig"
-description = "DISA STIG for Red Hat Enterprise Linux 8"
+name = "cis"
+description = "CIS for Red Hat Enterprise Linux 8"
 version = "0.0.1"
 modules = []
 groups = []
 distro = ""
+
+[[packages]]
+name = "openscap-scanner"
+version = "*"
+
+[[packages]]
+name = "scap-security-guide"
+version = "*"
 
 [[packages]]
 name = "aide"
@@ -29,7 +37,7 @@ size = 131072000
 
 [[customizations.filesystem]]
 mountpoint = "/usr"
-size = 2147483648
+size = 4294967296
 
 [[customizations.filesystem]]
 mountpoint = "/home"
@@ -52,64 +60,34 @@ home = "/home/kingsley/"
 groups = ["wheel"]
 
 [customizations.openscap]
-profile_id = "stig"
+data_dir = "/home/kingsley/openscap_data"
+profile_id = "cis"
 datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
 
 [[packages]]
-name = "dracut-fips"
+name = "sudo"
 version = "*"
 
 [[packages]]
-name = "rng-tools"
+name = "audit"
 version = "*"
 
 [[packages]]
-name = "tmux"
+name = "rsyslog"
 version = "*"
 
-# [[packages]]
-# name = "opensc"
-# version = "*"
+[[packages]]
+name = "firewalld"
+version = "*"
 
-# [[packages]]
-# name = "openssl-pkcs11"
-# version = "*"
-
-# [[packages]]
-# name = "audit"
-# version = "*"
-
-# [[packages]]
-# name = "rsyslog-gnutls"
-# version = "*"
-
-# [[packages]]
-# name = "rsyslog"
-# version = "*"
-
-# [[packages]]
-# name = "firewalld"
-# version = "*"
-
-# [[packages]]
-# name = "policycoreutils"
-# version = "*"
-
-# [[packages]]
-# name = "fapolicyd"
-# version = "*"
-
-# [[packages]]
-# name = "openssh-server"
-# version = "*"
-
-# [[packages]]
-# name = "usbguard"
-# version = "*"
+[[packages]]
+name = "libselinux"
+version = "*"
 
 [customizations.kernel]
-append = "slub_debug=P page_poison=1 vsyscall=none pti=on audit_backlog_limit=8192 audit=1 fips=1 boot=/dev/sda4"
+append = "audit_backlog_limit=8192 audit=1"
 
-# [customizations.services]
-# enabled = ["usbguard","sshd","fapolicyd","firewalld","rsyslog","auditd"]
-# disabled = ["kdump","systemd-coredump","autofs","debug-shell"]
+[customizations.services]
+enabled = ["crond","firewalld","rsyslog","auditd"]
+disabled = ["rpcbind", "nfs-server"]
+# disabled = ["snmpd","smb","squid","cups","ypserv","rsyncd","nfs-server","rpcbind","slapd","dovecot","httpd","vsftpd","named","dhcpd","avahi-daemon","autofs"]

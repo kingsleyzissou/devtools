@@ -6,7 +6,7 @@
     "rhel84": "rhel-guest-image-8.4-645.x86_64.qcow2",
     "rhel85": "rhel-guest-image-8.5-833.x86_64.qcow2",
     "rhel86": "rhel-guest-image-8.6-1407.x86_64.qcow2",
-    "rhel87": "rhel-guest-image-8.7-969.x86_64.qcow2",
+    "rhel87": "osbuild.qcow2",
     "rhel90": "rhel-guest-image-9.0-20210914.4.x86_64.qcow2",
     "rhel91": "rhel-guest-image-9.1-9.1.0.20220706.0.x86_64.qcow2",
     "centos8": "CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2",

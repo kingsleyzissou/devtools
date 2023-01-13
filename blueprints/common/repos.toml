@@ -2,24 +2,12 @@
 # Info
 ###############################################################################
 
-name = "baseline"
-description = "Baseline image - for oscap demo"
+name = "repos"
+description = "Custom repositories"
 version = "0.0.1"
 modules = []
 groups = []
 distro = ""
-
-###############################################################################
-# Packages
-###############################################################################
-
-[[packages]]
-name = "openscap-scanner"
-version = "*"
-
-[[packages]]
-name = "scap-security-guide"
-version = "*"
 
 ###############################################################################
 # Users
@@ -32,3 +20,20 @@ password = "$6$b/oXN5xGcuTmVdui$9T/FrBmUkcEHK5sLhg/E6sFXKa84zU3cLum3DPwppNzFhtAl
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
 home = "/home/kingsley/"
 groups = ["wheel"]
+
+###############################################################################
+# Repositories
+###############################################################################
+
+[[customizations.repositories]]
+id = "1password"
+name="1Password Stable Channel"
+baseurl=[ "https://downloads.1password.com/linux/rpm/stable/$basearch" ]
+gpgcheck=true
+gpgkey=[ "https://downloads.1password.com/linux/keys/1password.asc" ]
+
+[[customizations.repositories]]
+id = "Charm"
+name="charm"
+baseurl=[ "https://repo.charm.sh/yum/" ]
+gpgcheck=false

@@ -10,7 +10,7 @@ setuptools.setup(
     author="Kingsley Zissou",
     install_requires=["ruamel.yaml"],
     author_email="",
-    packages=['tools', 'scripts.vm', 'scripts.compose', 'scripts.sync'],
+    packages=['devtools', 'scripts.vm', 'scripts.compose', 'scripts.sync'],
     zip_safe=False,
     entry_points={
         'console_scripts': [

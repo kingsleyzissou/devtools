@@ -1,5 +1,5 @@
 import subprocess
-from tools import echo
+from devtools import echo
 
 
 def run(host, port, json):

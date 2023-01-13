@@ -4,7 +4,7 @@ import argparse
 import subprocess
 import sys
 
-from tools import echo, load_json
+from devtools import echo, load_json
 
 
 def get_benchmark(distro, profile):

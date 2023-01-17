@@ -28,16 +28,17 @@ def run(compose, host, port, finished=False, failed=False):
 def status(host, port, finished, failed):
     if finished:
         output = subprocess.run([
-            f"ssh -q {host} -p {port} composer-cli compose status --json | jq '.body | select(.finished != null) | [.finished[].id]'"
+            f"ssh -q {host} -p {port} composer-cli compose status --json | jq '.[] | select(.path == \"/compose/finished\") | .body.finished[].id'"
         ], encoding="utf-8", stdout=subprocess.PIPE, shell=True)
 
     if failed:
         output = subprocess.run([
-            f"ssh -q {host} -p {port} composer-cli compose status --json | jq '.body | select(.failed != null) | [.failed[].id]'"
+            f"ssh -q {host} -p {port} composer-cli compose status --json | jq '.[] | select(.path == \"/compose/failed\") | .body.failed[].id'"
         ], encoding="utf-8", stdout=subprocess.PIPE, shell=True)
 
     if output.returncode == 0:
-        return json.loads(output.stdout)
+        composes = list(filter(None, output.stdout.split("\n")))
+        return composes
 
     echo(output.stdout, "ERROR")
     return output.returncode
@@ -58,5 +59,5 @@ def delete_multi(host, port, composes):
     return r
 
 
-def delete(compose, host, port, finished, failed):
-    return run(compose, host, port, finished, failed)
+def delete(args):
+    return run(args.compose, args.host, args.port, args.finished, args.failed)

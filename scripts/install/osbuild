@@ -1,23 +1,30 @@
 #!/usr/bin/python3
-import os, subprocess, sys
+import os
+import subprocess
+import sys
 
-OSBUILD_DIR = os.path.join(os.path.expanduser("~"), "projects", "osbuild", "osbuild")
+OSBUILD_DIR = os.path.join("projects", "osbuild", "osbuild")
 BOLD = '\033[1m'
 RESET = '\033[0m'
 LEVELS = {
-    "OK": { "color": '\033[32m', "level": "Ok" },
-    "INFO": { "color": '\033[33m', "level": "Info" },
-    "ERROR": { "color": '\033[31m', "level": "Error" },
+    "OK": {"color": '\033[32m', "level": "Ok"},
+    "INFO": {"color": '\033[33m', "level": "Info"},
+    "ERROR": {"color": '\033[31m', "level": "Error"},
 }
+
 
 def __color(level):
     return LEVELS[level]['color']
 
+
 def __level(level):
     return LEVELS[level]['level']
 
-def echo(message, level = "INFO"):
-    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
+def echo(message, level="INFO"):
+    subprocess.run(
+        ["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
 
 def run_command(cmd, step, **args) -> None:
     try:
@@ -26,31 +33,40 @@ def run_command(cmd, step, **args) -> None:
         echo(f"Error carrying out {step} step", "ERROR")
         sys.exit(1)
 
+
 def initialize() -> None:
     echo("Cleaning git tree...")
     run_command(["git", "clean", "-xdf"], cwd=OSBUILD_DIR, step="setup")
-    run_command(["git", "commit", ".", "-m", "wip", "--allow-empty"], cwd=OSBUILD_DIR, step="setup")
+    run_command(["git", "commit", ".", "-m", "wip",
+                "--allow-empty"], cwd=OSBUILD_DIR, step="setup")
     build_deps()
+
 
 def build_deps() -> None:
     echo("Building dependencies...")
-    run_command(["sudo", "dnf", "-y", "builddep", "osbuild.spec"], cwd=OSBUILD_DIR, step="build deps")
+    run_command(["sudo", "dnf", "-y", "builddep", "osbuild.spec"],
+                cwd=OSBUILD_DIR, step="build deps")
     build()
+
 
 def build() -> None:
     echo("Building...")
     run_command(["make", "rpm"], cwd=OSBUILD_DIR, step="build")
     install()
 
+
 def install() -> None:
     echo("Installing rpm...")
-    cmd = " ".join(["sudo", "dnf", "install", "-y", os.path.join("rpmbuild", "RPMS", "noarch", "*.rpm")])
+    cmd = " ".join(["sudo", "dnf", "install", "-y",
+                   os.path.join("rpmbuild", "RPMS", "noarch", "*.rpm")])
     run_command(cmd, shell=True, cwd=OSBUILD_DIR, step="local installation")
+
 
 def main():
     initialize()
     echo("osbuild local installation complete", "OK")
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

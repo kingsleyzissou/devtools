@@ -1,4 +1,6 @@
-import os, subprocess, sys
+import os
+import subprocess
+import sys
 
 from .api import parse_args
 
@@ -9,11 +11,13 @@ COMPONENTS = {
     "blueprints": os.path.join(os.getcwd(), "blueprints")
 }
 
-def rsync(host, component, distro = None) -> None:
+
+def rsync(host, component, distro=None) -> None:
     src = COMPONENTS[component]
     dest = f"{host}:{PROJECTS_DIR}"
 
-    subprocess.run(["ssh", "-q", host, "mkdir", "-p", f"{PROJECTS_DIR}/{component}"])
+    subprocess.run(["ssh", "-q", host, "mkdir", "-p",
+                   f"{PROJECTS_DIR}/{component}"])
 
     if component == "blueprints":
         dest = f"{host}:{PROJECTS_DIR}/{component}"
@@ -22,12 +26,16 @@ def rsync(host, component, distro = None) -> None:
             subprocess.run(["rsync", "-aP", f"{src}/{distro}/.", dest])
         return
 
-    exclude = ["--exclude", "bin", "--exclude", "build", "--exclude", "rpmbuild"]
-    subprocess.run(["rsync", "-aP", *exclude, "--delete-excluded", "--delete", src, dest])
+    exclude = ["--exclude", "bin", "--exclude",
+               "build", "--exclude", "rpmbuild"]
+    subprocess.run(["rsync", "-aP", *exclude,
+                   "--delete-excluded", "--delete", src, dest])
+
 
 def run(args):
     def ssh_cmd(cmd):
-        ssh_cmd = ["ssh", "-q", args.host, "-p", args.port, "'python3 -s -'", "<"]
+        ssh_cmd = ["ssh", "-q", args.host, "-p",
+                   args.port, "'python3 -s -'", "<"]
         return " ".join([*ssh_cmd, *cmd])
 
     if args.composer:
@@ -54,6 +62,7 @@ def run(args):
         subprocess.run(cmd, shell=True)
 
     return 0
+
 
 def main():
     sys.exit(run(parse_args()))

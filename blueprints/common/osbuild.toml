@@ -22,6 +22,10 @@ name = "cockpit"
 version = "*"
 
 [[packages]]
+name = "cockpit-composer"
+version = "*"
+
+[[packages]]
 name = "openscap-scanner"
 version = "*"
 
@@ -88,7 +92,7 @@ password = "password42"
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBCWAwAqV3weCALKWrSAAHir+oIga1TU5VL4hnjWWU2x gzuccare@redhat.com"
 home = "/home/kingsley"
 shell = "/usr/bin/zsh"
-groups = ["wheel", "systemd-journal"]
+groups = ["wheel", "systemd-journal", "weldr"]
 
 [customizations.timezone]
 timezone = "Europe/Dublin"

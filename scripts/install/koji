@@ -1,25 +1,32 @@
 #!/usr/bin/python3
-import os, subprocess, sys
+import os
+import subprocess
+import sys
 
 PROJECT_DIR = os.path.join("projects", "osbuild")
 KOJI_DIR = os.path.join("projects", "osbuild", "osbuild-koji")
-PIDFILE= os.path.join(os.sep, "run", "composer-openid-server.pid")
+PIDFILE = os.path.join(os.sep, "run", "composer-openid-server.pid")
 BOLD = '\033[1m'
 RESET = '\033[0m'
 LEVELS = {
-    "OK": { "color": '\033[32m', "level": "Ok" },
-    "INFO": { "color": '\033[33m', "level": "Info" },
-    "ERROR": { "color": '\033[31m', "level": "Error" },
+    "OK": {"color": '\033[32m', "level": "Ok"},
+    "INFO": {"color": '\033[33m', "level": "Info"},
+    "ERROR": {"color": '\033[31m', "level": "Error"},
 }
+
 
 def __color(level):
     return LEVELS[level]['color']
 
+
 def __level(level):
     return LEVELS[level]['level']
 
-def echo(message, level = "INFO"):
-    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
+def echo(message, level="INFO"):
+    subprocess.run(
+        ["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
 
 def run_command(cmd, step, **args) -> None:
     try:
@@ -28,6 +35,7 @@ def run_command(cmd, step, **args) -> None:
         echo(f"Error carrying out {step} step", "ERROR")
         sys.exit(1)
 
+
 def spawn(cmd, step, **args) -> None:
     try:
         return subprocess.Popen(cmd, **args).pid
@@ -35,26 +43,35 @@ def spawn(cmd, step, **args) -> None:
         echo(f"Error carrying out {step} step", "ERROR")
         sys.exit(1)
 
+
 def initialize() -> None:
     echo("Preparing install...")
     if not os.path.exists(KOJI_DIR):
-        run_command(["git", "clone", "https://github.com/osbuild/osbuild_koji.git"], cwd=PROJECT_DIR, step="setup")
-    run_command(["npm", "install"], cwd=KOJI_DIR, stdout=subprocess.DEVNULL, step="setup")
+        run_command(["git", "clone", "https://github.com/osbuild/osbuild_koji.git"],
+                    cwd=PROJECT_DIR, step="setup")
+    run_command(["npm", "install"], cwd=KOJI_DIR,
+                stdout=subprocess.DEVNULL, step="setup")
     make_certs()
+
 
 def make_certs() -> None:
     echo("Generating certs")
-    run_command(["sudo", "test", "make-certs.sh"], cwd="koji-osbuild", step="make_certs")
+    run_command(["sudo", "test", "make-certs.sh"],
+                cwd="koji-osbuild", step="make_certs")
     build_container()
+
 
 def build_container() -> None:
     echo("Building container")
-    run_command(["sudo", "test", "build-container.sh"], cwd="koji-osbuild", step="build_container")
+    run_command(["sudo", "test", "build-container.sh"],
+                cwd="koji-osbuild", step="build_container")
+
 
 def main():
     initialize()
     echo("Composer installed successfully", "OK")
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

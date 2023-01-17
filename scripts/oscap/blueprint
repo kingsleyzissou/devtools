@@ -1,6 +1,10 @@
-import argparse, subprocess, sys
+#!/usr/bin/python3
+import argparse
+import subprocess
+import sys
 
 from devtools import echo, load_json
+
 
 def get_benchmark(distro, profile):
     profiles = load_json("./config/data/oscap-profiles.json")
@@ -9,6 +13,7 @@ def get_benchmark(distro, profile):
     except Exception:
         echo(f"{profile} not available for {distro} distro", "ERROR")
         sys.exit(1)
+
 
 def run(input_file, distro, profile):
     p = get_benchmark(distro, profile)
@@ -21,12 +26,14 @@ def run(input_file, distro, profile):
     subprocess.run(cmd)
     return 0
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", help="Input file", type=str)
     parser.add_argument("-d", "--distro", help="Distro", type=str)
     parser.add_argument("-b", "--profile", help="Openscap profile", type=str)
     return parser.parse_args()
+
 
 def blueprint():
     args = parse_args()

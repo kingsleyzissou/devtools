@@ -52,6 +52,9 @@ class BaseImage:
     def get_repos(self) -> None:
         repos = {}
 
+        if self.distro.startswith("fedora"):
+            return repos
+
         if self.distro.startswith("rhel8") or self.distro.startswith("centos8"):
             repos = load_json("./config/data/rhel8-repos.json")
             if not self.arch == "x86_64":

@@ -1,8 +1,6 @@
 import subprocess
 from devtools import echo
 
-from .delete import delete
-
 
 def run(compose, host, port):
     output = subprocess.run([
@@ -12,6 +10,10 @@ def run(compose, host, port):
 
     if output.returncode == 0:
         echo("Compose cancelled", "OK")
+        subprocess.run([
+            "compose", "delete",
+            "--compose", compose,
+        ], encoding="utf-8")
         return output.returncode
 
     echo(output.stdout, "ERROR")

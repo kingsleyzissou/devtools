@@ -12,11 +12,11 @@ def run(blueprint, image_type, host, port):
 
     if output.returncode == 0:
         c = json.loads(output.stdout)
-        print(c["body"]["build_id"])
+        print(c[0]["body"]["build_id"])
         return output.returncode
 
     err = json.loads(output.stdout)
-    echo(err["body"]["errors"][0]["msg"], "ERROR")
+    echo(err[0]["body"]["errors"][0]["msg"], "ERROR")
     return output.returncode
 
 

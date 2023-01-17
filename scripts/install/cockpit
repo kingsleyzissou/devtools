@@ -1,24 +1,31 @@
 #!/usr/bin/python3
-import os, subprocess, sys
+import os
+import subprocess
+import sys
 
 PROJECT_DIR = os.path.join("projects", "osbuild")
 COCKPIT_DIR = os.path.join("projects", "osbuild", "cockpit-composer")
 BOLD = '\033[1m'
 RESET = '\033[0m'
 LEVELS = {
-    "OK": { "color": '\033[32m', "level": "Ok" },
-    "INFO": { "color": '\033[33m', "level": "Info" },
-    "ERROR": { "color": '\033[31m', "level": "Error" },
+    "OK": {"color": '\033[32m', "level": "Ok"},
+    "INFO": {"color": '\033[33m', "level": "Info"},
+    "ERROR": {"color": '\033[31m', "level": "Error"},
 }
+
 
 def __color(level):
     return LEVELS[level]['color']
 
+
 def __level(level):
     return LEVELS[level]['level']
 
-def echo(message, level = "INFO"):
-    subprocess.run(["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
+def echo(message, level="INFO"):
+    subprocess.run(
+        ["echo", f"{__color(level)}{BOLD}[ {__level(level)} ]:{RESET} {message}"])
+
 
 def run_command(cmd, step, **args) -> None:
     try:
@@ -27,11 +34,14 @@ def run_command(cmd, step, **args) -> None:
         echo(f"Error carrying out {step} step", "ERROR")
         sys.exit(1)
 
+
 def initialize() -> None:
     echo("Preparing install...")
     if not os.path.exists(COCKPIT_DIR):
-        run_command(["git", "clone", "https://github.com/osbuild/cockpit-composer.git"], cwd=PROJECT_DIR, step="setup")
-    run_command(["npm", "install"], cwd=COCKPIT_DIR, stdout=subprocess.DEVNULL, step="setup")
+        run_command(["git", "clone", "https://github.com/osbuild/cockpit-composer.git"],
+                    cwd=PROJECT_DIR, step="setup")
+    run_command(["npm", "install"], cwd=COCKPIT_DIR,
+                stdout=subprocess.DEVNULL, step="setup")
     build()
 
 
@@ -40,17 +50,21 @@ def build() -> None:
     run_command(["npm", "run", "build"], cwd=COCKPIT_DIR, step="build")
     install()
 
+
 def install() -> None:
     src = os.path.join(os.path.expanduser("~"), COCKPIT_DIR, "public", "dist")
     dest = os.path.join(os.path.expanduser("~"), ".local", "share", "cockpit")
     if not os.path.exists(dest):
         run_command(["sudo", "mkdir", "-p", dest], step="installation")
-        run_command(["sudo", "ln", "-s", src, f"{dest}/composer"], step="installation")
+        run_command(["sudo", "ln", "-s", src,
+                    f"{dest}/composer"], step="installation")
+
 
 def main():
     initialize()
     echo("Cockpit-composer installation complete", "OK")
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

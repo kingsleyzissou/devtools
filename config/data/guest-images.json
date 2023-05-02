@@ -1,13 +1,14 @@
 {
   "x86_64": {
+    "arch": "Arch-Linux-x86_64-cloudimg.qcow2",
     "fedora37": "fedora37-osbuild.x86_64.qcow2",
     "rhel85": "rhel-guest-image-8.5-833.x86_64.qcow2",
     "rhel86": "rhel-guest-image-8.6-1407.x86_64.qcow2",
     "rhel87": "osbuild.qcow2",
     "rhel91": "rhel-guest-image-9.1-9.1.0.20220706.0.x86_64.qcow2",
     "rhel92": "",
-    "centos8": "CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2",
-    "centos9": "CentOS-Stream-GenericCloud-9-20210830.0.x86_64.qcow2"
+    "centos8": "centos.qcow2",
+    "centos9": "centos9.osbuild.qcow2"
   },
   "aarch": {
     "fedora35": "",

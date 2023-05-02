@@ -4,7 +4,9 @@ from .commands.start import start
 from .commands.cancel import cancel
 from .commands.delete import delete
 from .commands.status import status
+from .commands.inspect import inspect
 from .commands.download import download
+from .commands.metadata import metadata
 
 
 def add_start_parser(sub_parser):
@@ -69,6 +71,26 @@ def add_delete_parser(sub_parser):
     delete_parser.set_defaults(func=delete)
 
 
+def add_metadata_parser(sub_parser):
+    metadata_parser = sub_parser.add_parser(name="metadata")
+    metadata_parser.add_argument("compose", help="Compose id", type=str)
+    metadata_parser.add_argument(
+        "--host", type=str, default="localvm", help="Remote host")
+    metadata_parser.add_argument(
+        "-p", "--port", type=str, default="2222", help="Remote port")
+    metadata_parser.set_defaults(func=metadata)
+
+
+def add_inspect_parser(sub_parser):
+    inspect_parser = sub_parser.add_parser(name="inspect")
+    inspect_parser.add_argument("compose", help="Compose id", type=str)
+    inspect_parser.add_argument(
+        "--host", type=str, default="localvm", help="Remote host")
+    inspect_parser.add_argument(
+        "-p", "--port", type=str, default="2222", help="Remote port")
+    inspect_parser.set_defaults(func=inspect)
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     sub_parser = parser.add_subparsers()
@@ -77,4 +99,6 @@ def parse_args():
     add_status_parser(sub_parser)
     add_cancel_parser(sub_parser)
     add_delete_parser(sub_parser)
+    add_metadata_parser(sub_parser)
+    add_inspect_parser(sub_parser)
     return parser.parse_args()

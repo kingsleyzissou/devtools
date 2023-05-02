@@ -16,6 +16,10 @@ def run(blueprint, image_type, host, port):
         return output.returncode
 
     err = json.loads(output.stdout)
+    if err is None:
+        echo("Unknown error occurred", "ERROR")
+        return output.returncode
+
     echo(err[0]["body"]["errors"][0]["msg"], "ERROR")
     return output.returncode
 

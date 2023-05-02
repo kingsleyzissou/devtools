@@ -52,6 +52,9 @@ class BaseImage:
     def get_repos(self) -> None:
         repos = {}
 
+        if self.distro.startswith("arch"):
+            return repos
+
         if self.distro.startswith("fedora"):
             return repos
 
@@ -60,7 +63,7 @@ class BaseImage:
             if not self.arch == "x86_64":
                 del repos["rt"]
 
-        if self.distro.startswith("rhel9"):
+        if self.distro.startswith("rhel9") or self.distro.startswith("centos9"):
             repos = load_json("./config/data/rhel9-repos.json")
 
         for r in repos["yum_repos"]:

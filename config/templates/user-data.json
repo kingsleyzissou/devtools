@@ -28,15 +28,12 @@
     ]
   },
   "runcmd": [
+    "git config --system user.email testvm@osbuild.org",
+    "git config --system user.name kingsley",
     "sudo mkdir -p /home/kingsley/projects/osbuild",
     "cd /home/kingsley/projects/osbuild && git clone https://github.com/osbuild/osbuild-composer",
     "sudo mkdir -p /etc/osbuild-composer/repositories/",
     "sudo chown -R kingsley:kingsley /home/kingsley/projects",
-    "sudo systemctl enable --now osbuild-composer.socket",
-    "sudo systemctl enable --now cockpit.socket",
-    "sudo cp -r /home/kingsley/projects/osbuild/osbuild-composer/test/data/repositories/. /etc/osbuild-composer/repositories/.",
-    "sudo usermod -aG weldr,systemd-journal kingsley",
-    "git config --system user.email testvm@osbuild.org",
-    "git config --system user.name kingsley"
+    "sudo usermod -aG wheel,systemd-journal,weldr kingsley"
   ]
 }

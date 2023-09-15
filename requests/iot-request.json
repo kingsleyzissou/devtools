@@ -1,0 +1,17 @@
+{
+  "distribution": "fedora-38",
+  "image_requests": [
+    {
+      "architecture": "aarch64",
+      "image_type": "raw-image",
+      "ostree": {
+        "ref": "fedora/38/aarch64/iot",
+        "url": "http://54.171.76.42:8000/repo"
+      },
+      "upload_request": {
+        "type": "aws.s3",
+        "options": {}
+      }
+    }
+  ]
+}

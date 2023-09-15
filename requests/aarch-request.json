@@ -1,0 +1,28 @@
+{
+  "image_name": "gz-aarch",
+  "distribution": "fedora-38",
+  "customizations": {
+    "packages": [
+      "cloud-init",
+      "osbuild",
+      "osbuild-composer",
+      "composer-cli",
+      "podman",
+      "jq",
+      "go",
+      "libassuan-devel",
+      "gpgme-devel",
+      "git"
+    ]
+  },
+  "image_requests": [
+    {
+      "image_type": "guest-image",
+      "architecture": "aarch64",
+      "upload_request": {
+        "type": "aws.s3",
+        "options": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "x86_64": {
+    "arch": "",
+    "fedora38": "fedora38-osbuild.x86_64.qcow2",
+    "rhel87": "rhel-guest-image-8.7-1660.x86_64.qcow2",
+    "rhel88": "rhel-guest-image-8.8-1724.x86_64.qcow2",
+    "rhel89": "rhel-guest-image-8.9-591.x86_64.qcow2",
+    "rhel91": "",
+    "rhel92": "",
+    "centos8": "",
+    "centos9": ""
+  },
+  "aarch": {
+    "fedora38": "Fedora-Cloud-Base-38-1.6.aarch64.qcow2",
+    "rhel88": "",
+    "rhel89": "",
+    "rhel91": "",
+    "rhel92": "",
+    "centos8": "",
+    "centos9": ""
+  }
+}

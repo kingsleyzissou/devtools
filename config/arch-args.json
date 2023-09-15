@@ -1,0 +1,19 @@
+{
+  "x86_64": [
+    "--enable-kvm",
+    "--cpu",
+    "host"
+  ],
+  "aarch64": [
+    "-machine",
+    "virt,accel=kvm,gic-version=3",
+    "-bios",
+    "/usr/share/qemu-efi-aarch64/QEMU_EFI.fd",
+    "-boot",
+    "efi",
+    "-cpu",
+    "cortex-a72",
+    "-accel",
+    "tcg,thread=multi"
+  ]
+}

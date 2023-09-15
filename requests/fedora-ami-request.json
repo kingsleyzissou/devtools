@@ -1,0 +1,41 @@
+{
+  "distribution": "fedora-38",
+  "image_name": "gz",
+  "image_requests": [
+    {
+      "architecture": "aarch64",
+      "image_type": "aws",
+      "upload_request": {
+        "type": "aws",
+        "options": {
+          "share_with_accounts": [
+            "785963298336"
+          ]
+        }
+      }
+    }
+  ],
+  "customizations": {
+    "packages": [
+      "zsh",
+      "openscap-scanner",
+      "scap-security-guide",
+      "osbuild",
+      "osbuild-composer",
+      "composer-cli",
+      "cockpit",
+      "cockpit-composer",
+      "git",
+      "golang",
+      "make",
+      "jq",
+      "rpm-build",
+      "krb5-devel",
+      "npm",
+      "nodejs",
+      "podman",
+      "cloud-init",
+      "openssl"
+    ]
+  }
+}

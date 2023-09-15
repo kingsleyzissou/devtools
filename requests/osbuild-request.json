@@ -1,0 +1,37 @@
+{
+  "distribution": "rhel-87",
+  "image_name": "gz",
+  "image_requests": [
+    {
+      "architecture": "x86_64",
+      "image_type": "guest-image",
+      "upload_request": {
+        "type": "aws.s3",
+        "options": {}
+      }
+    }
+  ],
+  "customizations": {
+    "packages": [
+      "zsh",
+      "openscap-scanner",
+      "scap-security-guide",
+      "osbuild",
+      "osbuild-composer",
+      "composer-cli",
+      "cockpit",
+      "cockpit-composer",
+      "git",
+      "golang",
+      "make",
+      "jq",
+      "rpm-build",
+      "krb5-devel",
+      "npm",
+      "nodejs",
+      "podman",
+      "cloud-init",
+      "openssl"
+    ]
+  }
+}

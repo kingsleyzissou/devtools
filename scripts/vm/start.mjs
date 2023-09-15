@@ -61,7 +61,7 @@ const PORTS = [
 const parsePorts = (image) => {
   if (image) return 'hostfwd=tcp::2223-:22';
   // prettier-ignore
-  return PORTS.map( ({ host, guest }) => {
+  return PORTS.map(({ host, guest }) => {
     return `hostfwd=tcp::${host}-:${guest}`
   }).join(',');
 };
@@ -118,7 +118,7 @@ const userdata = ({ yum_repos }) =>
   });
 
 const getGuestImage = async (arch, distro) => {
-  const images = await fs.readJson('./config/data/guest-images.json');
+  const images = await fs.readJson('./config/guest-images.json');
   const guest = images[arch][distro];
   assert(guest === undefined, 'Distro and arch are not supported');
   return path.join(SCRATCH_DIR, guest);
@@ -143,10 +143,10 @@ const waitforSSH = async (port) => {
 
 const loadRepos = async (distro) => {
   if (distro.includes('rhel8')) {
-    return await fs.readJson('./config/data/rhel8-repos.json');
+    return await fs.readJson('./config/rhel8-repos.json');
   }
   if (distro.includes('rhel9')) {
-    return await fs.readJson('./config/data/rhel9-repos.json');
+    return await fs.readJson('./config/rhel9-repos.json');
   }
   return {};
 };
@@ -204,7 +204,7 @@ const getIso = async (image, overlay, distro) => {
 -----------------------------------------------------------------------------*/
 
 const constructArgs = async (arch, overlay, iso) => {
-  const arch_args = await fs.readJson('./config/data/arch-args.json');
+  const arch_args = await fs.readJson('./config/arch-args.json');
   const iso_args = iso ? ['-drive', `file=${iso},format=raw`] : [];
   const qcow_args = ['-drive', `file=${overlay},format=qcow2`];
   return [...arch_args[arch], ...qcow_args, ...iso_args, ...QEMU_ARGS];

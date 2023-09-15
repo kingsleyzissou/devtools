@@ -1,8 +1,0 @@
-#!/bin/bash
-
-sudo oscap xccdf eval \
-    --profile "${1}" \
-    --report "${2}" \
-    /usr/share/xml/scap/ssg/content/"${3}"
-
-sudo chown kingsley:kingsley "${2}"

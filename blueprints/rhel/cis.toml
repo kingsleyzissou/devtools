@@ -60,9 +60,10 @@ home = "/home/kingsley/"
 groups = ["wheel"]
 
 [customizations.openscap]
-data_dir = "/home/kingsley/openscap_data"
 profile_id = "cis"
 datastream = "/usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml"
+[customizations.openscap.tailoring]
+unselected = ["grub2_password"]
 
 [[packages]]
 name = "sudo"

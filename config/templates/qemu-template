@@ -1,7 +1,0 @@
-qemu-system-${arch} \
--smp 8 \
--m 8G \
--drive file=${image},format=qcow2 \
--device virtio-net-pci,netdev=n0,mac=${mac} \
--netdev user,id=n0,net=10.0.2.0/24,${fwds} \
---pidfile ${pidfile} \
